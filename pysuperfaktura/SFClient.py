@@ -121,7 +121,7 @@ class SFClient:
             raise SFAPIException('Passed invoice is not SFPayInvoice instance!')
 
         data = {'InvoicePayment': invoice_payment.params}
-        return self.send_request(self.pay_invoice_url, method='POST', data=data)
+        return self.send_request(self.pay_invoice_url, method='POST', data=json.dumps(data))
 
     def list_invoices(self, params=None):
         """

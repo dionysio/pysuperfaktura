@@ -13,6 +13,8 @@ class SFClient:
     getpdf_url = '/invoices/pdf/'
     create_invoice_url = '/invoices/create/'
     list_invoices_url = '/invoices/index.json'
+    get_invoice_url = '/invoices/view/'
+    pay_invoice_url = '/invoices/edit'
 
     def __init__(self, email, api_key):
         """
@@ -99,6 +101,14 @@ class SFClient:
         :return:
         """
         return self.send_request("".join([self.getpdf_url, invoice_id, '/token:', token]), json_output=False)
+
+    def get_invoice(self, invoice_id):
+        """
+
+        :param invoice_id:
+        :return:
+        """
+        return self.send_request('{}{}.json'.format(self.get_invoice_url, invoice_id))
 
     def list_invoices(self, params=None):
         """

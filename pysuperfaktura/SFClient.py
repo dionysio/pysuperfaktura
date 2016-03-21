@@ -15,7 +15,7 @@ class SFClient:
     create_invoice_url = '/invoices/create/'
     list_invoices_url = '/invoices/index.json'
     get_invoice_url = '/invoices/view/'
-    pay_invoice_url = '/invoice_payments/add/'
+    pay_invoice_url = '/invoice_payments/add/ajax:1/api:1'
 
     def __init__(self, email, api_key):
         """

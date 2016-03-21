@@ -37,3 +37,15 @@ class SFInvoice:
 class SFInvoiceClient:
     def __init__(self, params):
         self.params = params
+
+
+class SFInvoicePayment:
+    """
+
+    """
+
+    def __init__(self, params):
+        """
+
+        """
+        self.params = params

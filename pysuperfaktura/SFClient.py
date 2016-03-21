@@ -1,11 +1,12 @@
 # coding=utf-8
+from pysuperfaktura.invoice import SFInvoicePayment
 
 __author__ = 'backslash7 <lukas.stana@it-admin.sk>'
 
 import json
 import requests
-from exceptions import SFAPIException
-from invoice import SFInvoice, SFInvoiceClient
+from .exceptions import SFAPIException
+from .invoice import SFInvoice, SFInvoiceClient
 
 
 class SFClient:
@@ -14,7 +15,7 @@ class SFClient:
     create_invoice_url = '/invoices/create/'
     list_invoices_url = '/invoices/index.json'
     get_invoice_url = '/invoices/view/'
-    pay_invoice_url = '/invoices/edit'
+    pay_invoice_url = '/invoice_payments/add/'
 
     def __init__(self, email, api_key):
         """
@@ -109,6 +110,18 @@ class SFClient:
         :return:
         """
         return self.send_request('{}{}.json'.format(self.get_invoice_url, invoice_id))
+
+    def pay_invoice(self, invoice_payment):
+        """
+
+        :param invoice:
+        :return:
+        """
+        if not isinstance(invoice_payment, SFInvoicePayment):
+            raise SFAPIException('Passed invoice is not SFPayInvoice instance!')
+
+        data = {'InvoicePayment': invoice_payment.params}
+        return self.send_request(self.pay_invoice_url, method='POST', data=data)
 
     def list_invoices(self, params=None):
         """

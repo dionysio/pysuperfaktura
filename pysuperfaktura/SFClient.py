@@ -73,7 +73,7 @@ class SFClient:
         if json_output:
             returned_string = json.loads(req.text)
             if 'error' in returned_string and returned_string['error'] == 1:
-                raise SFAPIException('Error while creating invoice %(error_message)s' % returned_string)
+                raise SFAPIException('Error while creating invoice %s' % returned_string)
             else:
                 return returned_string
         else:
@@ -122,7 +122,7 @@ class SFClient:
             raise SFAPIException('Passed invoice is not SFInvoicePayment instance!')
 
         data = {'InvoicePayment': invoice_payment.params}
-        return self.send_request(self.pay_invoice_url, method='POST', data=json.dumps(data))
+        return self.send_request(self.pay_invoice_url, method='POST', data={'data': json.dumps(data)})
 
     def edit_invoice(self, invoice):
         """

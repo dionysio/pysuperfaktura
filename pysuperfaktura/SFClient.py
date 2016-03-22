@@ -15,7 +15,8 @@ class SFClient:
     create_invoice_url = '/invoices/create/'
     list_invoices_url = '/invoices/index.json'
     get_invoice_url = '/invoices/view/'
-    pay_invoice_url = '/invoice_payments/add/ajax:1/api:1'
+    pay_invoice_url = '/invoice_payments/add/'
+    edit_invoice_url = '/invoices/edit'
 
     def __init__(self, email, api_key):
         """
@@ -115,13 +116,29 @@ class SFClient:
         """
 
         :param invoice:
-        :return:
+        :return: :raise:
         """
         if not isinstance(invoice_payment, SFInvoicePayment):
-            raise SFAPIException('Passed invoice is not SFPayInvoice instance!')
+            raise SFAPIException('Passed invoice is not SFInvoicePayment instance!')
 
         data = {'InvoicePayment': invoice_payment.params}
         return self.send_request(self.pay_invoice_url, method='POST', data=json.dumps(data))
+
+    def edit_invoice(self, invoice):
+        """
+        Edituje sa v SF faktúru
+        :param invoice: Objekt faktúry
+        :type invoice: SFInvoice
+        :return: :raise:
+        """
+        if not isinstance(invoice, SFInvoice):
+            raise SFAPIException('Passed invoice is not SFInvoice instance!')
+
+        data = {'Client': invoice.client.params, 'Invoice': invoice.params, 'InvoiceItem': []}
+        for item in invoice.items:
+            data['InvoiceItem'].append(item.params)
+
+        return self.send_request(self.edit_invoice_url, method='POST', data={'data': json.dumps(data)})
 
     def list_invoices(self, params=None):
         """
